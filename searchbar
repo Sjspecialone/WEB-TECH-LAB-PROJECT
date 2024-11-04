@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search for NCERT Books</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+        }
+        .search-container {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+        #searchInput {
+            padding: 0.5rem;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #searchButton {
+            padding: 0.5rem;
+            margin-left: 0.5rem;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #searchButton:hover {
+            background-color: #555;
+        }
+        #result {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search for NCERT books...">
+        <button id="searchButton">Search</button>
+    </div>
+    <div id="result"></div>
+
+    <script>
+        const books = [
+            "Mathematics Class 11",
+            "Mathematics Class 12",
+            "Physics Part 1 Class 11",
+            "Physics Part 2 Class 11",
+            "Physics Part 1 Class 12",
+            "Physics Part 2 Class 12",
+            "Chemistry Part 1 Class 11",
+            "Chemistry Part 2 Class 11",
+            "Chemistry Part 1 Class 12",
+            "Chemistry Part 2 Class 12",
+            "Biology Class 11",
+            "Biology Class 12",
+            "Economics Class 11",
+            "Microeconomics Class 12",
+            "Macroeconomics Class 12",
+            "Political Science Class 11",
+            "Political Science Part 1 Class 12",
+            "Political Science Part 2 Class 12",
+            "History Class 11",
+            "History Class 12",
+            "Geography Class 11",
+            "Geography Class 12",
+            "Accountancy Part 1 Class 11",
+            "Accountancy Part 2 Class 11",
+            "Accountancy Part 1 Class 12",
+            "Accountancy Part 2 Class 12",
+            "Business Studies Class 11",
+            "Business Studies Class 12",
+            "English Hornbill Class 11",
+            "English Snapshot Class 11",
+            "English Flamingo Class 12",
+            "English Vistas Class 12"
+        ];
+
+        document.getElementById('searchButton').onclick = function() {
+            const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+            const resultDiv = document.getElementById('result');
+            const matchedBooks = books.filter(book => book.toLowerCase().includes(searchTerm));
+            if (matchedBooks.length > 0) {
+                resultDiv.innerHTML = `<strong>Results:</strong><br>${matchedBooks.join('<br>')}`;
+            } else {
+                resultDiv.innerHTML = "No matches found for your search.";
+            }
+        };
+    </script>
+</body>
+</html>
