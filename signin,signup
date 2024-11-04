@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Sign In/Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align items to the top */
+        }
+        .container-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 20px; /* Margin to add some space from the top */
+        }
+        .container {
+            position: absolute;
+            width: 100%;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #ffffff; /* Light background for boxes */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.5s ease;
+            border: 1px solid #ced4da; /* Light border for containers */
+        }
+        .login-container {
+            background-color: #f8f9fa; /* Light color for sign in box */
+        }
+        .signup-container {
+            background-color: #e2f0d9; /* Light green color for sign up box */
+        }
+        .container.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .container.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            display: none;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%; /* Full width for buttons */
+            margin-top: 10px; /* Margin for spacing between elements */
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .profile-container {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #6c757d; /* Darker background for profile icon */
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for profile icon */
+        }
+        .profile-info {
+            font-size: 16px;
+            margin-right: 10px;
+            color: #343a40;
+            font-weight: bold; /* Bold for user information */
+        }
+        .profile-menu {
+            display: none; /* Default to hidden */
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 150px;
+            border-radius: 4px; /* Rounded corners for the menu */
+        }
+        .profile-menu a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #343a40;
+        }
+        .profile-menu a:hover {
+            background-color: #f8f9fa; /* Light background on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container-wrapper">
+        <!-- Sign In Container -->
+        <div id="login-form" class="container login-container show">
+            <h2 class="welcome">Sign In</h2>
+            <form onsubmit="login(event)">
+                <label for="username">Username:</label><br>
+                <input type="text" id="username" name="username" required><br><br>
+                <label for="password">Password:</label><br>
+                <input type="password" id="password" name="password" required><br><br>
+                <button type="submit" class="button">Sign In</button>
+            </form>
+            <p class="error-message" id="login-error">Account not found. Please sign up first.</p>
+            <p>Don't have an account? <a href="#" onclick="showSignUp()">Sign Up</a></p>
+        </div>
+
+        <!-- Sign Up Container -->
+        <div id="signup-form" class="container signup-container hidden">
+            <h2 class="welcome">Sign Up</h2>
+            <form onsubmit="signUp(event)">
+                <label for="new-username">Username:</label><br>
+                <input type="text" id="new-username" name="new-username" required><br><br>
+                <label for="new-password">Password:</label><br>
+                <input type="password" id="new-password" name="new-password" required><br><br>
+                <button type="submit" class="button">Sign Up</button>
+            </form>
+            <p>Already have an account? <a href="#" onclick="showSignIn()">Sign In</a></p>
+        </div>
+    </div>
+
+    <!-- Profile Icon and Information -->
+    <div id="profile-container" class="profile-container">
+        <span id="profile-info" class="profile-info">Guest</span>
+        <div id="profile-icon" class="profile-icon" onclick="toggleProfileMenu()">G</div>
+        <div id="profile-menu" class="profile-menu">
+            <a id="logout" href="#" onclick="logout()">Logout</a>
+        </div>
+    </div>
+
+    <script>
+        let users = {}; // Simulate a database of users
+        let isLoggedIn = false;
+        let currentUser = 'Guest';
+
+        function showSignIn() {
+            resetFields(); // Reset fields when switching
+            document.getElementById('signup-form').classList.add('hidden');
+            document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('login-form').classList.add('show');
+            document.getElementById('signup-form').classList.remove('show');
+            document.getElementById('login-error').style.display = 'none';
+        }
+
+        function showSignUp() {
+            resetFields(); // Reset fields when switching
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('signup-form').classList.remove('hidden');
+            document.getElementById('signup-form').classList.add('show');
+            document.getElementById('login-form').classList.remove('show');
+        }
+
+        function resetFields() {
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('new-username').value = '';
+            document.getElementById('new-password').value = '';
+            document.getElementById('login-error').style.display = 'none'; // Hide error message on reset
+        }
+
+        function showProfileIcon() {
+            document.getElementById('profile-info').textContent = currentUser;
+            document.getElementById('profile-icon').textContent = currentUser.charAt(0).toUpperCase();
+
+            const profileMenu = document.getElementById('profile-menu');
+            if (isLoggedIn) {
+                profileMenu.style.display = 'block'; // Show the menu if logged in
+            } else {
+                profileMenu.style.display = 'none'; // Hide profile menu if guest
+            }
+        }
+
+        function login(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (users[username] && users[username] === password) {
+                isLoggedIn = true;
+                currentUser = username;
+                showProfileIcon();
+                alert(`Welcome, ${username}!`);
+                document.getElementById('login-error').style.display = 'none'; // Hide error on successful login
+            } else {
+                document.getElementById('login-error').style.display = 'block'; // Show error message
+            }
+        }
+
+        function signUp(event) {
+            event.preventDefault();
+            const newUsername = document.getElementById('new-username').value;
+            const newPassword = document.getElementById('new-password').value;
+
+            if (newUsername && newPassword) {
+                users[newUsername] = newPassword; // Save user credentials
+                isLoggedIn = true;
+                currentUser = newUsername; // Update current user
+                showProfileIcon();
+                alert('Account created successfully! You are now logged in.');
+            }
+        }
+
+        function toggleProfileMenu() {
+            const profileMenu = document.getElementById('profile-menu');
+            profileMenu.style.display = profileMenu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            currentUser = 'Guest'; // Reset to guest
+            showProfileIcon();
+            resetFields(); // Reset input fields on logout
+            alert('You have logged out successfully!');
+        }
+
+        // Initial call to set the profile icon
+        showProfileIcon();
+    </script>
+</body>
+</html>
