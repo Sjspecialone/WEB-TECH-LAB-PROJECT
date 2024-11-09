@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - Rebuy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #e0f7fa, #f1f8e9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .feedback-form-container {
+            background-color: #ffffff;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .feedback-form-container h2 {
+            color: #006400;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .feedback-form-container p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .feedback-form-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .feedback-form-container input[type="text"],
+        .feedback-form-container input[type="email"],
+        .feedback-form-container textarea,
+        .feedback-form-container select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .feedback-form-container textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        .feedback-form-container input[type="submit"] {
+            background-color: #32CD32;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .feedback-form-container input[type="submit"]:hover {
+            background-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+
+<div class="feedback-form-container">
+    <h2>Feedback Form</h2>
+    <p>We’d love to hear your thoughts about your experience with Rebuy!</p>
+    
+    <form action="#" method="POST">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+        
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        
+        <label for="experience">Rate Your Experience:</label>
+        <select id="experience" name="experience" required>
+            <option value="" disabled selected>Select a rating</option>
+            <option value="excellent">Excellent</option>
+            <option value="good">Good</option>
+            <option value="average">Average</option>
+            <option value="poor">Poor</option>
+        </select>
+        
+        <label for="comments">Your Feedback:</label>
+        <textarea id="comments" name="comments" placeholder="Share your experience with us..." required></textarea>
+        
+        <input type="submit" value="Submit Feedback">
+    </form>
+</div>
+
+</body>
+</html>
